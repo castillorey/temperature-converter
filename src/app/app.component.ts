@@ -7,7 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  temperatureTypes: Array<string> = [ 'Celsius', 'Farenheit'];
+  temperatureTypes: Array<string> = [ 'Celsius', 'Farenheit', 'Kelvin'];
   result: string = "--";
 
   temperatureForm!: FormGroup;
@@ -39,14 +39,45 @@ export class AppComponent implements OnInit {
 
   onSubmit() :void {
     if(this.temperatureForm.valid && !this.isSameConversionType){
-      console.log(this.temperatureForm.value);
-      this.resetForm();
+      this.result = this.convertTemperature(this.conversionFromType.value, this.conversionToType.value);
     }
   }
 
-  private resetForm(): void {
-    this.temperatureForm.reset();
-    this.conversionFromType.setValue(""); 
+  private convertTemperature(from: string, to: string): string {
+    const fromTo: string = from + '-' + to;
+    const degree: number = this.degree.value;
+    let type: string = "";
+    let calc: number = 0;
+
+    switch(fromTo) {
+      case "Celsius-Farenheit":
+        calc = (degree * 9/5) + 32;
+        type += ' ˚F';
+        break;
+      case "Celsius-Kelvin":
+        calc += degree + 273.15;
+        type += ' K';
+        break;
+      case "Farenheit-Celsius":
+        calc = (degree - 32 ) * 5/9;
+        type += ' ˚C';
+        break;
+      case "Farenheit-Kelvin":
+        calc = (degree - 32 ) * 5/9 + 273.15;
+        type += ' K';
+        break;
+      case "Kelvin-Celsius":
+        calc = degree - 273.15;
+        type += ' ˚C';
+        break;
+      case "Kelvin-Farenheit":
+        calc = (degree - 273.15) * 9/5 + 32;
+        type += ' ˚F';
+        break;
+      default:
+        break;
+    }
+    return calc + type;
   }
 
 }
