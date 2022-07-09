@@ -41,6 +41,7 @@ export class AppComponent implements OnInit {
     if(this.temperatureForm.valid && !this.isSameConversionType){
       this.result = this.convertTemperature(this.conversionFromType.value, this.conversionToType.value);
     }
+    this.temperatureForm.markAllAsTouched();
   }
 
   private convertTemperature(from: string, to: string): string {

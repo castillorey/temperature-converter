@@ -2,7 +2,7 @@
   <!-- Card -->
   <div class="rounded overflow-hidden shadow-lg p-6 bg-white">
     <form novalidate [formGroup]="temperatureForm" (ngSubmit)="onSubmit()">
-      <!-- Form controls from -->
+      <!-- Form controls -->
       <div class="flex mb-4">
         <!-- Degrees control-->
         <div class="w-24 mr-3">
@@ -25,19 +25,17 @@
               <option value="">Select a type</option>
               <option *ngFor="let type of temperatureTypes" [value]="type">{{type}}</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
+            <ng-container [ngTemplateOutlet]="chevron"></ng-container>
           </div>
         </div>
       </div>
       <!-- Validations -->
-      <span *ngIf="!conversionFromType.value && conversionFromType.touched" class="text-red-500">You must select a conversion type</span>
+      <span class="validation-text" *ngIf="degree.errors?.pattern && degree.touched">Just numbers are valid</span>
+      <span class="validation-text" *ngIf="degree.errors?.required && degree.touched">Enter a number</span>
+      <span class="validation-text" *ngIf="!conversionFromType.value && conversionFromType.touched">You must select a conversion type</span>
       
-      <!-- Form controls to convert-->
-      <div class="flex items-end mb-4">
+      <!-- Form controls -->
+      <div class="flex items-end mt-2 mb-4">
         <!-- Type control -->
         <div class="shrink mr-3">
           <label class="block text-gray-700 text-sm font-bold mb-2" for="conversionToType">
@@ -50,11 +48,7 @@
               <option value="">Select a type</option>
               <option *ngFor="let type of temperatureTypes" [value]="type">{{type}}</option>
             </select>
-            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
-              </svg>
-            </div>
+            <ng-container [ngTemplateOutlet]="chevron"></ng-container>
           </div>
         </div>
         <!-- Action button -->
@@ -65,9 +59,8 @@
         </button>
       </div>
       <!-- Validations -->
-      <span *ngIf="degree.errors?.pattern" class="text-red-500">Just numbers are valid</span>
-      <span *ngIf="!conversionToType.value && conversionToType.touched" class="text-red-500">You must select a conversion type</span>
-      <span *ngIf="isSameConversionType && conversionToType.touched" class="text-red-500">The conversion types must be different from each other</span>
+      <span class="validation-text" *ngIf="!conversionToType.value && conversionToType.touched">You must select a conversion type</span>
+      <span class="validation-text" *ngIf="isSameConversionType && conversionToType.touched">The conversion types must be different from each other</span>
     </form>
 
 
@@ -80,3 +73,11 @@
     </div>
   </div>
 </div>
+
+<ng-template #chevron>
+  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+      <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" />
+    </svg>
+  </div>
+</ng-template>
